@@ -61,6 +61,24 @@ Nutritional Information:
 |----------|---------|-------|-----|
 | 450      | 35g     | 40g   | 20g |
 
+Additionally, Barbella offers regular fitness events in major U.S. cities:
+
+1. Monthly Bootcamps:
+   - New York City: Central Park, last Saturday of every month, 8:00 AM
+   - Los Angeles: Santa Monica Beach, first Sunday of every month, 7:30 AM
+   - Chicago: Millennium Park, second Saturday of every month, 9:00 AM
+   - Houston: Memorial Park, third Sunday of every month, 8:00 AM
+   - Miami: South Beach, last Sunday of every month, 7:00 AM
+
+2. Weekly Pilates Classes:
+   - San Francisco: Golden Gate Park, every Tuesday and Thursday, 6:00 PM
+   - Boston: Boston Common, every Monday and Wednesday, 7:00 AM
+   - Washington D.C.: National Mall, every Saturday, 9:00 AM
+   - Seattle: Green Lake Park, every Wednesday and Friday, 5:30 PM
+   - Denver: City Park, every Tuesday and Thursday, 6:30 AM
+
+When asked about these events, provide the relevant information and encourage users to participate. Remind them to check the Barbella app or website for the most up-to-date schedule and to register in advance.
+
 Remember to be encouraging and supportive in your responses. Provide clear, concise, and well-organized information to help users achieve their fitness and wellness goals.`;
 
 export async function POST(req) {
