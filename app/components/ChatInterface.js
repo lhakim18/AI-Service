@@ -1,7 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
-import { Box, Button, Stack, TextField, IconButton } from '@mui/material';
+import { Box, Button, Stack, TextField, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import ReactMarkdown from 'react-markdown';
+import { handleUserMessage } from '../utils/chatUtils';
 
 export default function ChatInterface({ onClose }) {
   console.log('ChatInterface component rendered');
@@ -14,13 +15,13 @@ export default function ChatInterface({ onClose }) {
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+  }
 
   useEffect(() => {
     // Simulate AI sending the initial message
     const initialMessage = {
       role: 'assistant',
-      content: "Hi, I'm Barbella, your personal fitness and wellness assistant. How can I help you today?"
+      content: "Hi, I'm Barbella, your personal fitness and wellness assistant. I can help you with workout plans, nutrition advice, and even find local fitness events. Just ask me to 'find [event type] events near [location]'!"
     };
     setMessages([initialMessage]);
   }, []);
@@ -47,25 +48,13 @@ export default function ChatInterface({ onClose }) {
     setMessage(''); // This line clears the input field after sending the message
 
     try {
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newMessages),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const data = await response.text();
+      const response = await handleUserMessage(message);
       setMessages((prevMessages) => [
         ...prevMessages,
-        { role: 'assistant', content: data },
+        { role: 'assistant', content: response },
       ]);
     } catch (error) {
-      console.error('Error:', error);
+      console.error('Error processing message:', error);
       setMessages((prevMessages) => [
         ...prevMessages,
         { role: 'assistant', content: `Error: ${error.message}. Please try again.` },
@@ -73,6 +62,38 @@ export default function ChatInterface({ onClose }) {
     } finally {
       setIsLoading(false);
     }
+  };
+
+  const formatWorkout = (content) => {
+    if (content.includes('| Exercise | Sets | Reps |')) {
+      const rows = content.split('\n');
+      const headers = rows[0].split('|').filter(cell => cell.trim() !== '').map(cell => cell.trim());
+      const data = rows.slice(2).map(row => row.split('|').filter(cell => cell.trim() !== '').map(cell => cell.trim()));
+
+      return (
+        <TableContainer component={Paper}>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                {headers.map((header, index) => (
+                  <TableCell key={index}>{header}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {data.map((row, rowIndex) => (
+                <TableRow key={rowIndex}>
+                  {row.map((cell, cellIndex) => (
+                    <TableCell key={cellIndex}>{cell}</TableCell>
+                  ))}
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      );
+    }
+    return <ReactMarkdown>{content}</ReactMarkdown>;
   };
 
   return (
@@ -121,11 +142,7 @@ export default function ChatInterface({ onClose }) {
             p={1}
             maxWidth="80%"
           >
-            {message.role === 'assistant' ? (
-              <ReactMarkdown>{message.content}</ReactMarkdown>
-            ) : (
-              message.content
-            )}
+            {message.role === 'assistant' ? formatWorkout(message.content) : message.content}
           </Box>
         ))}
         <div ref={messagesEndRef} />

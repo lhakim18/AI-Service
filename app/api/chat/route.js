@@ -16,10 +16,10 @@ When responding, please follow these formatting guidelines:
 
 Example of a workout table:
 
-| Exercise | Sets | Reps | Rest | Notes |
-|----------|------|------|------| ------|
-| Squats   | 3    | 10   | 60s  | 240 lbs
-| Push-ups | 3    | 12   | 45s  | Modified
+| Exercise | Sets | Reps | Rest | 
+|----------|------|------|------| 
+| Squats   | 3    | 10   | 60s  | 
+| Push-ups | 3    | 12   | 45s  |
 
 For recipes, please format them as follows:
 
